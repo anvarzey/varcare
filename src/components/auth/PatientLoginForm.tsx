@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Button } from '../ui/button'
 import { LockIcon, MailIcon } from 'lucide-react'
-import InputWithIcon from '../custom-ui/Input'
+import CustomInput from '../custom-ui/Input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema } from '@/schemas/loginSchema'
 
@@ -29,7 +29,7 @@ export default function PatientLoginForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <InputWithIcon field={field} Icon={MailIcon} placeholder='johndoe@fakemail.com' />
+              <CustomInput field={field} Icon={MailIcon} placeholder='johndoe@fakemail.com' />
               <FormMessage />
             </FormItem>
           )}
@@ -41,7 +41,7 @@ export default function PatientLoginForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
-              <InputWithIcon field={field} Icon={LockIcon} />
+              <CustomInput field={field} Icon={LockIcon} />
               <FormMessage />
             </FormItem>
           )}

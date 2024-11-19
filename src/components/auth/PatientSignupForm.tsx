@@ -3,12 +3,28 @@
 import { useForm } from 'react-hook-form'
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Button } from '../ui/button'
-import { ClipboardListIcon, ClipboardPlusIcon, DnaIcon, IdCardIcon, LockIcon, MailIcon, PhoneIcon, PillIcon, UserIcon } from 'lucide-react'
+import {
+  BriefcaseBusinessIcon,
+  Building2Icon,
+  ClipboardPlusIcon,
+  DnaIcon,
+  IdCardIcon,
+  LocateFixedIcon,
+  LockIcon,
+  MailIcon,
+  MapPinHouseIcon,
+  PhoneIcon,
+  PillIcon,
+  StethoscopeIcon,
+  UserIcon
+} from 'lucide-react'
+import CustomTextarea from '../custom-ui/Textarea'
 import CustomInput from '../custom-ui/Input'
 import DatePicker from '../custom-ui/DatePicker'
 import { Signup, signupSchema } from '@/schemas/signupSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import BiInputContainer from '../shared/BiInputContainer'
+import CustomSelect from '../custom-ui/Select'
 
 export default function PatientSignupForm() {
   const form = useForm<Signup>({
@@ -17,13 +33,18 @@ export default function PatientSignupForm() {
       surname: '',
       email: '',
       phone: '',
-      birthday: '',
-      gender: '',
+      birthDate: undefined,
+      gender: undefined,
+      occupation: '',
+      address: '',
+      city: '',
       password: '',
       idNumber: '',
       insuranceNumber: '',
+      insuranceProvider: '',
       emergencyContactName: '',
       emergencyContactPhone: '',
+      primaryCarePhysician: '',
       allergies: '',
       personalMedicalHistory: '',
       familiarMedicalHistory: '',
@@ -36,6 +57,21 @@ export default function PatientSignupForm() {
   const onSubmit = (e: any) => {
     e.preventDefault()
   }
+
+  const genderOptions = [
+    {
+      title: 'Female',
+      value: 'Female'
+    },
+    {
+      title: 'Male',
+      value: 'Male'
+    },
+    {
+      title: 'Other',
+      value: 'Other'
+    },
+  ]
 
   return (
     <Form {...form}>
@@ -97,10 +133,10 @@ export default function PatientSignupForm() {
           <BiInputContainer>
             <FormField
               control={form.control}
-              name="birthday"
+              name="birthDate"
               render={() => (
                 <FormItem className='w-full'>
-                  <FormLabel>Birthday</FormLabel>
+                  <FormLabel>Date of birth</FormLabel>
                   <DatePicker />
                   <FormMessage />
                 </FormItem>
@@ -113,7 +149,47 @@ export default function PatientSignupForm() {
               render={({ field }) => (
                 <FormItem className='w-full'>
                   <FormLabel>Gender</FormLabel>
-                  <CustomInput field={field} Icon={DnaIcon} placeholder='123 456 789' />
+                  <CustomSelect field={field} Icon={DnaIcon} options={genderOptions} placeholder='Select your gender' />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </BiInputContainer>
+
+          <div>
+            <FormField
+              control={form.control}
+              name="occupation"
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Occupation</FormLabel>
+                  <CustomInput field={field} Icon={BriefcaseBusinessIcon} placeholder='Engineer' />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <BiInputContainer>
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Address</FormLabel>
+                  <CustomInput field={field} Icon={MapPinHouseIcon} placeholder='Fake Street 123' />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>City</FormLabel>
+                  <CustomInput field={field} Icon={LocateFixedIcon} placeholder='Madrid' />
                   <FormMessage />
                 </FormItem>
               )}
@@ -122,7 +198,7 @@ export default function PatientSignupForm() {
         </div>
 
         <div className='space-y-4'>
-          <h2 className='font-semibold'>Medical Condition</h2>
+          <h2 className='font-semibold'>Medical information</h2>
 
           <BiInputContainer>
             <FormField
@@ -142,7 +218,7 @@ export default function PatientSignupForm() {
               name="usualMedication"
               render={({ field }) => (
                 <FormItem className='w-full'>
-                  <FormLabel>Usual Medication</FormLabel>
+                  <FormLabel>Usual medication</FormLabel>
                   <CustomInput field={field} Icon={PillIcon} placeholder='johndoe@fakemail.com' />
                   <FormMessage />
                 </FormItem>
@@ -151,44 +227,58 @@ export default function PatientSignupForm() {
 
           </BiInputContainer>
 
-          <BiInputContainer>
+          <div>
             <FormField
               control={form.control}
               name="personalMedicalHistory"
               render={({ field }) => (
                 <FormItem className='w-full'>
-                  <FormLabel>Personal Medical History</FormLabel>
-                  <CustomInput field={field} Icon={ClipboardListIcon} placeholder='Doe' />
+                  <FormLabel>Personal medical history</FormLabel>
+                  <CustomTextarea field={field} />
                   <FormMessage />
                 </FormItem>
               )}
             />
+          </div>
 
+          <div>
             <FormField
               control={form.control}
               name="familiarMedicalHistory"
               render={({ field }) => (
                 <FormItem className='w-full'>
-                  <FormLabel>Familiar Medical History</FormLabel>
-                  <CustomInput field={field} placeholder='123 456 789' />
+                  <FormLabel>Familiar medical history</FormLabel>
+                  <CustomTextarea field={field} />
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </BiInputContainer>
-        </div>
+          </div>
 
-        <div className='space-y-4'>
-          <h2 className='font-semibold'>Identification</h2>
+
+          <div>
+            <FormField
+              control={form.control}
+              name="primaryCarePhysician"
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Primary care physician</FormLabel>
+                  <CustomInput field={field} Icon={StethoscopeIcon} placeholder='Doe' />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+          </div>
 
           <BiInputContainer>
             <FormField
               control={form.control}
-              name="idNumber"
+              name="insuranceProvider"
               render={({ field }) => (
                 <FormItem className='w-full'>
-                  <FormLabel>ID Number</FormLabel>
-                  <CustomInput field={field} Icon={IdCardIcon} placeholder='1234567A' />
+                  <FormLabel>Insurance provider</FormLabel>
+                  <CustomInput field={field} Icon={Building2Icon} placeholder='Insurance Company' />
                   <FormMessage />
                 </FormItem>
               )}
@@ -198,13 +288,32 @@ export default function PatientSignupForm() {
               name="insuranceNumber"
               render={({ field }) => (
                 <FormItem className='w-full'>
-                  <FormLabel>Insurance Number</FormLabel>
+                  <FormLabel>Insurance number</FormLabel>
                   <CustomInput field={field} Icon={ClipboardPlusIcon} placeholder='123456ABC' />
                   <FormMessage />
                 </FormItem>
               )}
             />
           </BiInputContainer>
+
+        </div>
+
+        <div className='space-y-4'>
+          <h2 className='font-semibold'>Identification</h2>
+
+          <div>
+            <FormField
+              control={form.control}
+              name="idNumber"
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>ID number</FormLabel>
+                  <CustomInput field={field} Icon={IdCardIcon} placeholder='1234567A' />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             control={form.control}
@@ -228,7 +337,7 @@ export default function PatientSignupForm() {
               name="emergencyContactName"
               render={({ field }) => (
                 <FormItem className='w-full'>
-                  <FormLabel>Emergency Contact Name</FormLabel>
+                  <FormLabel>Emergency contact name</FormLabel>
                   <CustomInput field={field} Icon={UserIcon} placeholder='Kate' />
                   <FormMessage />
                 </FormItem>
@@ -239,7 +348,7 @@ export default function PatientSignupForm() {
               name="emergencyContactPhone"
               render={({ field }) => (
                 <FormItem className='w-full'>
-                  <FormLabel>Emergency Contact Phone</FormLabel>
+                  <FormLabel>Emergency contact phone</FormLabel>
                   <CustomInput field={field} Icon={PhoneIcon} placeholder='123 456 789' />
                   <FormMessage />
                 </FormItem>
